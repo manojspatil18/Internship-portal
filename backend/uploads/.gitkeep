@@ -1,0 +1,2 @@
+Resume files uploaded by students will be stored here.
+This folder is served statically by Express at /uploads/.
