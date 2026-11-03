@@ -1,7 +1,7 @@
 # 🎯 InternHub — Student Internship Portal
-### MERN Full Stack Mini Project
 
-A complete **MERN Stack** web application for connecting students with companies for internships.
+## 🔗 Live Demo
+# 👉 https://tinyurl.com/internship-portal
 
 ---
 
@@ -10,7 +10,7 @@ A complete **MERN Stack** web application for connecting students with companies
 ### 🎓 Student Interface
 - Register & Login with JWT authentication
 - Browse & search internship listings
-- Apply with resume (PDF) upload + cover letter
+- Apply with cover letter
 - Track application status (Pending / Under Review / Accepted / Rejected)
 
 ### 🏢 Company/Recruiter Interface
@@ -27,48 +27,40 @@ A complete **MERN Stack** web application for connecting students with companies
 |-------|------------|
 | Frontend | React.js (Vite) |
 | Backend | Node.js + Express.js |
-| Database | MongoDB (local) |
+| Database | JSON File (MongoDB ready) |
 | Authentication | JWT + bcryptjs |
 | File Upload | Multer |
 | HTTP Client | Axios |
 
 ---
 
-## 🚀 How to Run
+## 🚀 How to Run Locally
 
-### Prerequisites
-1. **Node.js** (v18+) — [Download](https://nodejs.org)
-2. **MongoDB** (local) — [Download](https://www.mongodb.com/try/download/community)
-
----
-
-### Step 1 — Start MongoDB
-Make sure MongoDB is running on your machine:
+### Step 1 — Run Backend
 ```bash
-# Windows: Start MongoDB service from Services panel
-# OR run:
-mongod
-```
-
----
-
-### Step 2 — Setup & Run Backend
-```bash
-cd internship-portal/backend
+cd backend
 npm install
 npm run dev
+# Runs at http://localhost:5000
 ```
-Backend will start at: **http://localhost:5000**
+
+### Step 2 — Run Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+# Runs at http://localhost:3000
+```
 
 ---
 
-### Step 3 — Setup & Run Frontend
-```bash
-cd internship-portal/frontend
-npm install
-npm run dev
-```
-Frontend will start at: **http://localhost:3000**
+## 🔑 Demo Login Credentials
+
+| Role | Email | Password |
+|------|-------|----------|
+| 🏢 Company | hr@technova.com | password |
+| 🏢 Company | hr@greenleaf.com | password |
+| 🎓 Student | Register new account | — |
 
 ---
 
@@ -77,64 +69,17 @@ Frontend will start at: **http://localhost:3000**
 ```
 internship-portal/
 ├── backend/
-│   ├── models/           # MongoDB Schemas
-│   │   ├── User.js       # Student model
-│   │   ├── Company.js    # Company model
-│   │   ├── Internship.js # Internship listing
-│   │   └── Application.js# Job application
-│   ├── routes/
-│   │   ├── auth.js       # Login/Register
-│   │   ├── internships.js# CRUD for listings
-│   │   └── applications.js# Apply & manage
-│   ├── middleware/
-│   │   └── auth.js       # JWT middleware
-│   ├── uploads/          # Uploaded resumes
-│   └── server.js         # Entry point
+│   ├── models/        → User, Company, Internship, Application
+│   ├── routes/        → auth, internships, applications
+│   ├── middleware/    → JWT auth
+│   └── server.js     → Express server
 │
-└── frontend/
-    └── src/
-        ├── pages/
-        │   ├── student/  # 5 student pages
-        │   └── company/  # 5 company pages
-        ├── components/   # Reusable UI
-        ├── context/      # Auth state
-        └── api/          # Axios config
+├── frontend/
+│   └── src/
+│       ├── pages/student/   → Login, Register, Dashboard, Browse, Applications
+│       ├── pages/company/   → Login, Register, Dashboard, Post, ViewApplicants
+│       ├── components/      → Navbar, InternshipCard
+│       └── context/         → AuthContext
+│
+└── InternHub.html    → Standalone demo (no install needed)
 ```
-
----
-
-## 🔗 API Endpoints
-
-### Auth (`/api/auth`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/student/register` | Student registration |
-| POST | `/student/login` | Student login |
-| POST | `/company/register` | Company registration |
-| POST | `/company/login` | Company login |
-
-### Internships (`/api/internships`)
-| Method | Endpoint | Auth |
-|--------|----------|------|
-| GET | `/` | Public |
-| GET | `/:id` | Public |
-| GET | `/company/mine` | Company |
-| POST | `/` | Company |
-| DELETE | `/:id` | Company |
-
-### Applications (`/api/applications`)
-| Method | Endpoint | Auth |
-|--------|----------|------|
-| POST | `/` | Student |
-| GET | `/student/mine` | Student |
-| GET | `/internship/:id` | Company |
-| PATCH | `/:id/status` | Company |
-
----
-
-## 🎨 Design
-- Dark glassmorphism theme
-- Purple/blue gradient for students
-- Pink/orange gradient for companies
-- Smooth animations & micro-interactions
-- Fully responsive layout
