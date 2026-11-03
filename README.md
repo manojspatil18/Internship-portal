@@ -1,7 +1,10 @@
 # 🎯 InternHub — Student Internship Portal
 
 ## 🔗 Live Demo
-# 👉 https://tinyurl.com/internship-portal
+
+[![Live Demo](https://img.shields.io/badge/🎯%20Live%20Demo-Click%20Here-6c63ff?style=for-the-badge)](https://tinyurl.com/internship-portal)
+
+**👉 [https://tinyurl.com/internship-portal](https://tinyurl.com/internship-portal)**
 
 ---
 
