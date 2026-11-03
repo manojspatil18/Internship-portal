@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InternHub — Student Internship Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #07071a; --bg2: #0d0d2b; --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08); --purple: #6c63ff; --blue: #4facfe;
+      --green: #00e9a3; --pink: #f77bff; --orange: #ff8c42; --red: #ff4757;
+      --text: #f0f0ff; --text2: #9090b8; --text3: #555577;
+      --grad: linear-gradient(135deg,#6c63ff,#4facfe);
+      --grad2: linear-gradient(135deg,#f77bff,#ff8c42);
+      --r: 12px; --r2: 20px; --t: all .3s cubic-bezier(.4,0,.2,1);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+    h1,h2,h3,h4{font-family:'Outfit',sans-serif;line-height:1.2}
+    a{text-decoration:none;color:inherit}
+    /* PAGES */
+    .page{display:none;min-height:100vh}
+    .page.active{display:block}
+    /* NAVBAR */
+    nav{position:fixed;top:0;left:0;right:0;height:65px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(7,7,26,.88);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);z-index:1000}
+    .brand{font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+    .nav-links{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+    .nav-btn{padding:.45rem 1rem;border-radius:8px;font-size:.85rem;font-weight:500;color:var(--text2);cursor:pointer;border:none;background:none;font-family:'Inter',sans-serif;transition:var(--t)}
+    .nav-btn:hover,.nav-btn.active{color:var(--text);background:rgba(255,255,255,.06)}
+    /* BUTTONS */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.7rem 1.6rem;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;border:none;transition:var(--t);white-space:nowrap}
+    .btn-primary{background:var(--grad);color:#fff;box-shadow:0 4px 20px rgba(108,99,255,.35)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(108,99,255,.5)}
+    .btn-company{background:var(--grad2);color:#fff;box-shadow:0 4px 20px rgba(247,123,255,.35)}
+    .btn-company:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(247,123,255,.5)}
+    .btn-outline{background:transparent;color:var(--purple);border:1.5px solid var(--purple)}
+    .btn-outline:hover{background:rgba(108,99,255,.1);transform:translateY(-2px)}
+    .btn-green{background:linear-gradient(135deg,#00e9a3,#00b4d8);color:#07071a}
+    .btn-green:hover{transform:translateY(-2px)}
+    .btn-red{background:linear-gradient(135deg,#ff4757,#ff6b81);color:#fff}
+    .btn-red:hover{transform:translateY(-2px)}
+    .btn-sm{padding:.4rem .9rem;font-size:.78rem}
+    .btn-lg{padding:.9rem 2rem;font-size:.95rem;border-radius:var(--r2)}
+    .btn-full{width:100%}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+    /* FORMS */
+    .form-group{display:flex;flex-direction:column;gap:.35rem}
+    .label{font-size:.78rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
+    .input,.select,.textarea{width:100%;padding:.8rem 1rem;background:rgba(255,255,255,.04);border:1.5px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'Inter',sans-serif;font-size:.9rem;transition:var(--t);outline:none}
+    .input:focus,.select:focus,.textarea:focus{border-color:var(--purple);background:rgba(108,99,255,.05);box-shadow:0 0 0 3px rgba(108,99,255,.15)}
+    .input::placeholder{color:var(--text3)}
+    .select{cursor:pointer}.select option{background:var(--bg2)}
+    .textarea{resize:vertical;min-height:110px}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    /* CARDS */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);backdrop-filter:blur(20px);transition:var(--t)}
+    .card:hover{border-color:rgba(108,99,255,.25);box-shadow:0 16px 48px rgba(108,99,255,.2);transform:translateY(-3px)}
+    /* BADGES */
+    .badge{display:inline-flex;align-items:center;padding:.2rem .7rem;border-radius:20px;font-size:.72rem;font-weight:600}
+    .b-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid rgba(108,99,255,.3)}
+    .b-blue{background:rgba(79,172,254,.2);color:var(--blue);border:1px solid rgba(79,172,254,.3)}
+    .b-green{background:rgba(0,233,163,.2);color:var(--green);border:1px solid rgba(0,233,163,.3)}
+    .b-orange{background:rgba(255,140,66,.2);color:var(--orange);border:1px solid rgba(255,140,66,.3)}
+    .b-red{background:rgba(255,71,87,.2);color:var(--red);border:1px solid rgba(255,71,87,.3)}
+    .b-pending{background:rgba(255,180,0,.2);color:#ffb400;border:1px solid rgba(255,180,0,.3)}
+    .b-review{background:rgba(79,172,254,.2);color:var(--blue);border:1px solid rgba(79,172,254,.3)}
+    .b-accepted{background:rgba(0,233,163,.2);color:var(--green);border:1px solid rgba(0,233,163,.3)}
+    .b-rejected{background:rgba(255,71,87,.2);color:var(--red);border:1px solid rgba(255,71,87,.3)}
+    /* ALERT */
+    .alert{padding:.8rem 1.1rem;border-radius:var(--r);font-size:.88rem;font-weight:500;margin-bottom:1rem;animation:slideIn .3s}
+    .alert-err{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.3);color:#ff6b81}
+    .alert-ok{background:rgba(0,233,163,.1);border:1px solid rgba(0,233,163,.3);color:var(--green)}
+    /* SPINNER */
+    .spinner{width:36px;height:36px;border:3px solid rgba(108,99,255,.2);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:2rem auto}
+    /* LAYOUT */
+    .container{max-width:1180px;margin:0 auto;padding:0 1.5rem}
+    .pt{padding-top:85px}
+    .grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.4rem}
+    .flex{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+    .between{justify-content:space-between}
+    .mb1{margin-bottom:.6rem}.mb2{margin-bottom:1.2rem}.mb3{margin-bottom:1.8rem}.mt1{margin-top:.6rem}.mt2{margin-top:1.2rem}
+    /* HERO */
+    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;background:radial-gradient(ellipse at 20% 20%,rgba(108,99,255,.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(79,172,254,.1) 0%,transparent 60%),var(--bg);position:relative;overflow:hidden}
+    .hero::before,.hero::after{content:'';position:absolute;border-radius:50%;animation:pulse 4s ease-in-out infinite}
+    .hero::before{width:500px;height:500px;top:-100px;left:-100px;background:radial-gradient(circle,rgba(108,99,255,.12),transparent 70%)}
+    .hero::after{width:400px;height:400px;bottom:-80px;right:-80px;background:radial-gradient(circle,rgba(79,172,254,.1),transparent 70%);animation-delay:2s}
+    .hero-content{position:relative;z-index:1;max-width:780px}
+    .hero-pill{display:inline-block;padding:.35rem 1.1rem;background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.3);border-radius:50px;font-size:.78rem;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.4rem}
+    .hero h1{font-size:clamp(2rem,5vw,3.4rem);margin-bottom:1rem}
+    .hero p{font-size:1.05rem;color:var(--text2);max-width:520px;margin:0 auto 2.2rem}
+    .hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+    .hero-stats{display:flex;gap:2.5rem;justify-content:center;margin-top:3rem}
+    .stat-num{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-lbl{font-size:.78rem;color:var(--text3);margin-top:.15rem}
+    /* ROLE CARDS */
+    .role-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:680px;margin:3rem auto 0}
+    .role-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:2.2rem 1.8rem;text-align:center;cursor:pointer;transition:var(--t)}
+    .role-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(108,99,255,.25);border-color:rgba(108,99,255,.4)}
+    .role-icon{width:76px;height:76px;border-radius:18px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:2.3rem;margin:0 auto 1.1rem}
+    .role-card.company .role-icon{background:var(--grad2)}
+    .role-card h3{font-size:1.3rem;margin-bottom:.4rem}
+    .role-card p{font-size:.84rem;color:var(--text2)}
+    /* AUTH */
+    .auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:radial-gradient(ellipse at 30% 30%,rgba(108,99,255,.12),transparent 60%),var(--bg)}
+    .auth-box{background:rgba(13,13,43,.85);border:1px solid var(--border);border-radius:var(--r2);padding:2.2rem;width:100%;max-width:470px;backdrop-filter:blur(30px);box-shadow:0 8px 32px rgba(108,99,255,.12)}
+    .auth-icon{width:58px;height:58px;border-radius:15px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto .9rem}
+    .auth-box.company .auth-icon{background:var(--grad2)}
+    .auth-box h2{text-align:center;font-size:1.5rem;margin-bottom:.3rem}
+    .auth-box .sub{text-align:center;font-size:.84rem;color:var(--text2);margin-bottom:1.6rem}
+    .auth-form{display:flex;flex-direction:column;gap:.95rem}
+    .auth-footer{text-align:center;margin-top:1.3rem;font-size:.84rem;color:var(--text3)}
+    .link{color:var(--purple);font-weight:600;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;font-size:inherit}
+    .link:hover{text-decoration:underline}
+    /* DASHBOARD HEADER */
+    .dash-head{background:linear-gradient(135deg,rgba(108,99,255,.12),rgba(79,172,254,.08));border:1px solid var(--border);border-radius:var(--r2);padding:1.8rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.8rem}
+    .dash-head.company{background:linear-gradient(135deg,rgba(247,123,255,.12),rgba(255,140,66,.08))}
+    /* STATS ROW */
+    .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.8rem}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:1.3rem;text-align:center;transition:var(--t)}
+    .stat-card:hover{border-color:rgba(108,99,255,.25)}
+    .stat-card .num{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-card .lbl{font-size:.78rem;color:var(--text3);margin-top:.25rem}
+    /* INTERNSHIP CARD */
+    .int-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:1.5rem;display:flex;flex-direction:column;gap:.9rem;transition:var(--t);position:relative;overflow:hidden}
+    .int-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--grad);opacity:0;transition:var(--t)}
+    .int-card:hover{border-color:rgba(108,99,255,.3);box-shadow:0 12px 40px rgba(108,99,255,.18);transform:translateY(-3px);background:rgba(255,255,255,.06)}
+    .int-card:hover::before{opacity:1}
+    .avatar{width:46px;height:46px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff;font-family:'Outfit',sans-serif;flex-shrink:0}
+    .int-title{font-size:1.05rem;font-weight:700;margin-bottom:.15rem}
+    .int-company{font-size:.8rem;color:var(--text2)}
+    .meta{display:flex;flex-wrap:wrap;gap:.5rem}
+    .meta span{font-size:.78rem;color:var(--text2)}
+    .skills{display:flex;flex-wrap:wrap;gap:.35rem}
+    .skill{padding:.18rem .55rem;background:rgba(108,99,255,.12);border:1px solid rgba(108,99,255,.2);border-radius:6px;font-size:.7rem;font-weight:600;color:var(--purple)}
+    .int-footer{display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap}
+    .stipend{font-size:.85rem;font-weight:700;color:var(--green)}
+    /* APP ITEM */
+    .app-item{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:var(--t)}
+    .app-item:hover{border-color:rgba(108,99,255,.2);background:rgba(255,255,255,.06)}
+    /* SEARCH BAR */
+    .search-bar{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:1.1rem 1.4rem;display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-bottom:1.4rem}
+    .search-bar .input{flex:1;min-width:180px}
+    /* SECTION HEADER */
+    .sec-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;margin-bottom:1.2rem}
+    .sec-head h3{margin:0;font-size:1rem;color:var(--text)}
+    /* MODAL */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:2000;padding:1.5rem;animation:fadeIn .2s}
+    .overlay.hidden{display:none}
+    .modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:1.8rem;width:100%;max-width:530px;max-height:90vh;overflow-y:auto;animation:slideUp .3s}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem}
+    .modal-head h3{margin:0}
+    .close-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:var(--t)}
+    .close-btn:hover{background:rgba(255,71,87,.15);color:var(--red)}
+    /* EMPTY STATE */
+    .empty{text-align:center;padding:3.5rem 1rem}
+    .empty-icon{font-size:3.5rem;margin-bottom:.8rem;opacity:.4}
+    .empty h3{font-size:1rem;color:var(--text2);margin-bottom:.4rem}
+    .empty p{font-size:.82rem;color:var(--text3)}
+    /* SECTION (for tech + features) */
+    .section{padding:4rem 1.5rem}
+    .section-center{text-align:center;margin-bottom:2.5rem}
+    .section-center h2{font-size:1.9rem;margin-bottom:.5rem}
+    .section-center p{color:var(--text2);font-size:.92rem}
+    .tech-grid{display:flex;justify-content:center;gap:1.3rem;flex-wrap:wrap}
+    .tech-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:1.4rem 1.8rem;text-align:center;min-width:130px;transition:var(--t)}
+    .tech-card:hover{border-color:rgba(108,99,255,.3);transform:translateY(-4px)}
+    .tech-icon{font-size:2.3rem;margin-bottom:.5rem}
+    .tech-name{font-weight:700;font-size:.95rem}
+    .tech-role{font-size:.75rem;color:var(--text3);margin-top:.2rem}
+    /* GRADIENT TEXT */
+    .g{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .g2{background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    footer{background:var(--bg2);border-top:1px solid var(--border);padding:1.2rem;text-align:center;font-size:.8rem;color:var(--text3)}
+    /* ANIMATIONS */
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.06)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes slideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:640px){.row2,.role-grid{grid-template-columns:1fr}.dash-head{flex-direction:column;text-align:center}.hero-stats{gap:1.5rem}}
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="brand" onclick="showPage('home')">🎯 InternHub</div>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-btn" onclick="showPage('home')">Home</button>
+    <button class="nav-btn" onclick="showPage('sLogin')">Student Login</button>
+    <button class="nav-btn" onclick="showPage('cLogin')">Company Login</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ HOME PAGE ═══════════════════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Find Your Perfect <span class="g">Internship</span><br>or Hire Top Talent</h1>
+      <p>Connect students with companies for transformative internship experiences.</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary btn-lg" onclick="showPage('sLogin')">🎓 I'm a Student</button>
+        <button class="btn btn-company btn-lg" onclick="showPage('cLogin')">🏢 I'm a Recruiter</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num" id="heroInternCount">0</div><div class="stat-lbl">Internships</div></div>
+        <div><div class="stat-num" id="heroCompCount">0</div><div class="stat-lbl">Companies</div></div>
+        <div><div class="stat-num" id="heroStudCount">0</div><div class="stat-lbl">Students</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Role cards -->
+  <div class="section" style="background:var(--bg2)">
+    <div class="container">
+      <div class="section-center">
+        <h2>Choose Your Role</h2>
+        <p>Two dedicated interfaces — one for students, one for companies</p>
+      </div>
+      <div class="role-grid">
+        <div class="role-card" onclick="showPage('sRegister')">
+          <div class="role-icon">🎓</div>
+          <h3>Student</h3>
+          <p>Browse internships, apply with resume &amp; cover letter, track application status</p>
+          <button class="btn btn-primary" style="margin-top:1.2rem;width:100%">Get Started →</button>
+        </div>
+        <div class="role-card company" onclick="showPage('cRegister')">
+          <div class="role-icon">🏢</div>
+          <h3>Company</h3>
+          <p>Post internship openings, review applicants and accept or reject candidates</p>
+          <button class="btn btn-company" style="margin-top:1.2rem;width:100%">Get Started →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tech Stack -->
+  <div class="section">
+    <div class="container">
+      <div class="section-center">
+        <h2>Built with <span class="g">MERN Stack</span></h2>
+        <p>Full-stack web application using modern technologies</p>
+      </div>
+      <div class="tech-grid">
+        <div class="tech-card"><div class="tech-icon">🍃</div><div class="tech-name" style="color:#00ed64">MongoDB</div><div class="tech-role">Database</div></div>
+        <div class="tech-card"><div class="tech-icon">⚡</div><div class="tech-name" style="color:var(--pink)">Express.js</div><div class="tech-role">Backend</div></div>
+        <div class="tech-card"><div class="tech-icon">⚛️</div><div class="tech-name" style="color:var(--blue)">React.js</div><div class="tech-role">Frontend</div></div>
+        <div class="tech-card"><div class="tech-icon">🟢</div><div class="tech-name" style="color:var(--green)">Node.js</div><div class="tech-role">Runtime</div></div>
+      </div>
+    </div>
+  </div>
+  <footer>🎯 InternHub — Student Internship Portal</footer>
+</div>
+
+<!-- ═══════════════════════ STUDENT LOGIN ═══════════════════════ -->
+<div class="page" id="page-sLogin">
+  <div class="auth-page">
+    <div class="auth-box">
+      <div class="auth-icon">🎓</div>
+      <h2>Student Login</h2>
+      <div class="sub">Welcome back! Find your next internship</div>
+      <div id="sLoginErr"></div>
+      <form class="auth-form" onsubmit="studentLogin(event)">
+        <div class="form-group"><label class="label">Email</label><input class="input" type="email" id="slEmail" placeholder="you@college.edu" required /></div>
+        <div class="form-group"><label class="label">Password</label><input class="input" type="password" id="slPass" placeholder="••••••••" required /></div>
+        <button class="btn btn-primary btn-full btn-lg" type="submit">🎯 Sign In</button>
+      </form>
+      <div class="auth-footer">No account? <button class="link" onclick="showPage('sRegister')">Register here</button> &nbsp;|&nbsp; <button class="link" onclick="showPage('home')">← Home</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ STUDENT REGISTER ═══════════════════════ -->
+<div class="page" id="page-sRegister">
+  <div class="auth-page">
+    <div class="auth-box" style="max-width:500px">
+      <div class="auth-icon">🎓</div>
+      <h2>Student Registration</h2>
+      <div class="sub">Create your account to find internships</div>
+      <div id="sRegErr"></div>
+      <form class="auth-form" onsubmit="studentRegister(event)">
+        <div class="row2">
+          <div class="form-group"><label class="label">Full Name *</label><input class="input" id="srName" placeholder="John Doe" required /></div>
+          <div class="form-group"><label class="label">Phone</label><input class="input" id="srPhone" placeholder="+91 9876543210" /></div>
+        </div>
+        <div class="form-group"><label class="label">Email *</label><input class="input" type="email" id="srEmail" placeholder="you@college.edu" required /></div>
+        <div class="form-group"><label class="label">Password *</label><input class="input" type="password" id="srPass" placeholder="Min 6 characters" required minlength="6" /></div>
+        <div class="row2">
+          <div class="form-group"><label class="label">College</label><input class="input" id="srCollege" placeholder="Your College" /></div>
+          <div class="form-group"><label class="label">Degree</label><input class="input" id="srDegree" placeholder="B.Tech CSE" /></div>
+        </div>
+        <button class="btn btn-primary btn-full btn-lg" type="submit">🚀 Create Account</button>
+      </form>
+      <div class="auth-footer">Already registered? <button class="link" onclick="showPage('sLogin')">Sign in</button> &nbsp;|&nbsp; <button class="link" onclick="showPage('home')">← Home</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ STUDENT DASHBOARD ═══════════════════════ -->
+<div class="page" id="page-sDash">
+  <div class="container pt" style="padding-top:90px;padding-bottom:3rem">
+    <div class="dash-head">
+      <div>
+        <h2>Welcome back, <span class="g" id="sDashName">Student</span>! 👋</h2>
+        <div style="font-size:.84rem;color:var(--text3);margin-top:.3rem">Track your internship journey</div>
+      </div>
+      <button class="btn btn-primary" onclick="showPage('sBrowse')">🔍 Browse Internships</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="sdTotal">0</div><div class="lbl">Applied</div></div>
+      <div class="stat-card"><div class="num" style="background:linear-gradient(135deg,#ffb400,#ff8c42);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="sdPending">0</div><div class="lbl">Pending</div></div>
+      <div class="stat-card"><div class="num" style="background:linear-gradient(135deg,#00e9a3,#00b4d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="sdAccepted">0</div><div class="lbl">Accepted 🎉</div></div>
+      <div class="stat-card"><div class="num" style="background:linear-gradient(135deg,#ff4757,#ff6b81);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="sdRejected">0</div><div class="lbl">Rejected</div></div>
+    </div>
+    <div class="sec-head mb2"><h3>⚡ Quick Actions</h3></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem">
+      <div class="card" style="padding:1.4rem;cursor:pointer" onclick="showPage('sBrowse')">
+        <div style="font-size:2rem;margin-bottom:.6rem">🔍</div>
+        <h4 style="color:var(--purple);margin-bottom:.3rem">Browse Internships</h4>
+        <p style="font-size:.8rem;color:var(--text2)">Find new opportunities</p>
+      </div>
+      <div class="card" style="padding:1.4rem;cursor:pointer" onclick="showPage('sApps')">
+        <div style="font-size:2rem;margin-bottom:.6rem">📋</div>
+        <h4 style="color:var(--blue);margin-bottom:.3rem">My Applications</h4>
+        <p style="font-size:.8rem;color:var(--text2)">Track your status</p>
+      </div>
+    </div>
+    <div class="sec-head"><h3>📌 Recent Applications</h3><button class="btn btn-outline btn-sm" onclick="showPage('sApps')">View All</button></div>
+    <div id="sdRecentApps"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ BROWSE INTERNSHIPS ═══════════════════════ -->
+<div class="page" id="page-sBrowse">
+  <div class="container pt" style="padding-top:90px;padding-bottom:3rem">
+    <div class="sec-head mb2">
+      <div><h2>🔍 Browse Internships</h2><p style="font-size:.85rem;color:var(--text2);margin-top:.3rem">Find the perfect opportunity</p></div>
+      <span class="badge b-purple" id="browseCount">0 listings</span>
+    </div>
+    <form class="search-bar" onsubmit="searchInternships(event)">
+      <input class="input" id="searchQ" placeholder="Search by role, company, skill..." />
+      <select class="select" id="searchType" style="width:130px">
+        <option value="">All Types</option>
+        <option>Remote</option><option>On-site</option><option>Hybrid</option>
+      </select>
+      <button class="btn btn-primary" type="submit">Search</button>
+      <button class="btn btn-outline" type="button" onclick="clearSearch()">Clear</button>
+    </form>
+    <div class="grid2" id="internshipsList"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ MY APPLICATIONS ═══════════════════════ -->
+<div class="page" id="page-sApps">
+  <div class="container pt" style="padding-top:90px;padding-bottom:3rem">
+    <div class="sec-head mb2">
+      <div><h2>📋 My Applications</h2><p style="font-size:.85rem;color:var(--text2);margin-top:.3rem">Track all your internship applications</p></div>
+      <span class="badge b-purple" id="appsCount">0</span>
+    </div>
+    <div class="flex mb2">
+      <span class="badge b-pending">⏳ Pending</span>
+      <span class="badge b-review">🔎 Under Review</span>
+      <span class="badge b-accepted">✅ Accepted</span>
+      <span class="badge b-rejected">❌ Rejected</span>
+    </div>
+    <div id="myAppsList" style="display:flex;flex-direction:column;gap:.9rem"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ COMPANY LOGIN ═══════════════════════ -->
+<div class="page" id="page-cLogin">
+  <div class="auth-page">
+    <div class="auth-box company">
+      <div class="auth-icon">🏢</div>
+      <h2>Company Login</h2>
+      <div class="sub">Manage internships &amp; find talent</div>
+      <div id="cLoginErr"></div>
+      <form class="auth-form" onsubmit="companyLogin(event)">
+        <div class="form-group"><label class="label">Email</label><input class="input" type="email" id="clEmail" placeholder="hr@company.com" required /></div>
+        <div class="form-group"><label class="label">Password</label><input class="input" type="password" id="clPass" placeholder="••••••••" required /></div>
+        <button class="btn btn-company btn-full btn-lg" type="submit">🔑 Sign In</button>
+      </form>
+      <div class="auth-footer">No account? <button class="link" onclick="showPage('cRegister')">Register company</button> &nbsp;|&nbsp; <button class="link" onclick="showPage('home')">← Home</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ COMPANY REGISTER ═══════════════════════ -->
+<div class="page" id="page-cRegister">
+  <div class="auth-page">
+    <div class="auth-box company" style="max-width:520px">
+      <div class="auth-icon">🏢</div>
+      <h2>Company Registration</h2>
+      <div class="sub">Post internships &amp; hire talented students</div>
+      <div id="cRegErr"></div>
+      <form class="auth-form" onsubmit="companyRegister(event)">
+        <div class="row2">
+          <div class="form-group"><label class="label">Company Name *</label><input class="input" id="crName" placeholder="Acme Corp" required /></div>
+          <div class="form-group"><label class="label">Industry</label>
+            <select class="select" id="crIndustry"><option value="">Select</option><option>Technology</option><option>Finance</option><option>Healthcare</option><option>Education</option><option>Marketing</option><option>Other</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label class="label">Work Email *</label><input class="input" type="email" id="crEmail" placeholder="hr@company.com" required /></div>
+        <div class="form-group"><label class="label">Password *</label><input class="input" type="password" id="crPass" placeholder="Min 6 characters" required minlength="6" /></div>
+        <div class="row2">
+          <div class="form-group"><label class="label">Website</label><input class="input" id="crWebsite" placeholder="https://company.com" /></div>
+          <div class="form-group"><label class="label">Location</label><input class="input" id="crLocation" placeholder="Bangalore, India" /></div>
+        </div>
+        <button class="btn btn-company btn-full btn-lg" type="submit">🚀 Register Company</button>
+      </form>
+      <div class="auth-footer">Already registered? <button class="link" onclick="showPage('cLogin')">Sign in</button> &nbsp;|&nbsp; <button class="link" onclick="showPage('home')">← Home</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ COMPANY DASHBOARD ═══════════════════════ -->
+<div class="page" id="page-cDash">
+  <div class="container pt" style="padding-top:90px;padding-bottom:3rem">
+    <div class="dash-head company">
+      <div>
+        <h2>Welcome, <span class="g2" id="cDashName">Company</span>! 🏢</h2>
+        <div style="font-size:.84rem;color:var(--text3);margin-top:.3rem">Manage listings &amp; review applicants</div>
+      </div>
+      <button class="btn btn-company" onclick="showPage('cPost')">+ Post Internship</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="cdListings">0</div><div class="lbl">Active Listings</div></div>
+      <div class="stat-card"><div class="num" style="background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="cdOpenings">0</div><div class="lbl">Total Openings</div></div>
+    </div>
+    <div class="sec-head mb2"><h3>📋 Your Internship Listings</h3><button class="btn btn-outline btn-sm" onclick="showPage('cPost')">+ New Listing</button></div>
+    <div id="cListings" style="display:flex;flex-direction:column;gap:.9rem"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ POST INTERNSHIP ═══════════════════════ -->
+<div class="page" id="page-cPost">
+  <div class="container pt" style="padding-top:90px;padding-bottom:3rem;max-width:720px">
+    <button class="btn btn-outline btn-sm mb2" onclick="showPage('cDash')">← Back</button>
+    <h2 style="margin-bottom:.4rem">📝 Post New Internship</h2>
+    <p style="font-size:.85rem;color:var(--text2);margin-bottom:1.5rem">Fill in details to attract the right candidates</p>
+    <div class="card" style="padding:2rem">
+      <div id="postErr"></div><div id="postOk"></div>
+      <form onsubmit="postInternship(event)" style="display:flex;flex-direction:column;gap:1.1rem">
+        <div class="form-group"><label class="label">Title *</label><input class="input" id="pTitle" placeholder="e.g. Frontend Developer Intern" required /></div>
+        <div class="form-group"><label class="label">Description *</label><textarea class="textarea" id="pDesc" placeholder="Describe the role and responsibilities..." required></textarea></div>
+        <div class="row2">
+          <div class="form-group"><label class="label">Location *</label><input class="input" id="pLoc" placeholder="e.g. Bangalore / Remote" required /></div>
+          <div class="form-group"><label class="label">Work Type</label><select class="select" id="pType"><option>Remote</option><option>On-site</option><option>Hybrid</option></select></div>
+        </div>
+        <div class="row2">
+          <div class="form-group"><label class="label">Duration *</label><input class="input" id="pDur" placeholder="e.g. 3 months" required /></div>
+          <div class="form-group"><label class="label">Stipend (₹/month)</label><input class="input" id="pStip" placeholder="e.g. 10000 or Unpaid" /></div>
+        </div>
+        <div class="row2">
+          <div class="form-group"><label class="label">Openings</label><input class="input" type="number" id="pOpen" value="1" min="1" /></div>
+          <div class="form-group"><label class="label">Deadline</label><input class="input" type="date" id="pDead" /></div>
+        </div>
+        <div class="form-group"><label class="label">Skills (comma separated)</label><input class="input" id="pSkills" placeholder="e.g. React, Node.js, MongoDB" /></div>
+        <div style="display:flex;gap:.8rem;justify-content:flex-end">
+          <button type="button" class="btn btn-outline" onclick="showPage('cDash')">Cancel</button>
+          <button type="submit" class="btn btn-company btn-lg">🚀 Post Internship</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ VIEW APPLICANTS ═══════════════════════ -->
+<div class="page" id="page-cApps">
+  <div class="container pt" style="padding-top:90px;padding-bottom:3rem">
+    <button class="btn btn-outline btn-sm mb2" onclick="showPage('cDash')">← Back to Dashboard</button>
+    <div class="dash-head company">
+      <div><h2 id="cAppsTitle">Applicants</h2><div style="font-size:.84rem;color:var(--text3)">Review and manage applicants</div></div>
+      <span class="badge b-orange" id="cAppsCount" style="font-size:.9rem;padding:.4rem 1.1rem">0 Applicants</span>
+    </div>
+    <div class="stats-row" id="cAppsStats" style="grid-template-columns:repeat(auto-fit,minmax(110px,1fr))"></div>
+    <div id="cAppsList" style="display:flex;flex-direction:column;gap:1.1rem"></div>
+  </div>
+</div>
+
+<!-- APPLY MODAL -->
+<div class="overlay hidden" id="applyModal">
+  <div class="modal">
+    <div class="modal-head"><h3>Apply for Internship</h3><button class="close-btn" onclick="closeApplyModal()">✕</button></div>
+    <div id="applyInfo" style="background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1.3rem;font-size:.84rem"></div>
+    <div id="applyErr"></div><div id="applyOk"></div>
+    <form onsubmit="submitApplication(event)" style="display:flex;flex-direction:column;gap:1rem">
+      <div class="form-group"><label class="label">Cover Letter</label><textarea class="textarea" id="coverLetter" placeholder="Tell us why you're perfect for this role..."></textarea></div>
+      <div style="display:flex;gap:.8rem;justify-content:flex-end">
+        <button type="button" class="btn btn-outline" onclick="closeApplyModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">🚀 Submit Application</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  DATABASE (localStorage)
+// ═══════════════════════════════════════════════════════════════
+const DB = {
+  get: k => JSON.parse(localStorage.getItem('ip_' + k) || '[]'),
+  set: (k, v) => localStorage.setItem('ip_' + k, JSON.stringify(v)),
+  id: () => Date.now().toString(36) + Math.random().toString(36).substr(2,5)
+};
+
+// Seed sample data on first load
+(function seed() {
+  if (DB.get('seeded').length) return;
+  DB.set('companies', [
+    { id:'c1', name:'TechNova Solutions', email:'hr@technova.com', password:'password', industry:'Technology', location:'Bangalore', website:'technova.com' },
+    { id:'c2', name:'GreenLeaf Finance', email:'hr@greenleaf.com', password:'password', industry:'Finance', location:'Mumbai', website:'greenleaf.com' }
+  ]);
+  DB.set('internships', [
+    { id:'i1', cid:'c1', company:'TechNova Solutions', title:'Frontend Developer Intern', desc:'Work on React.js web apps. Build responsive UIs and collaborate with senior developers on real-world projects.', location:'Bangalore (Hybrid)', type:'Hybrid', stipend:'12000', duration:'3 months', skills:['React','JavaScript','CSS','HTML'], openings:3, deadline:'2026-12-31', active:true, date: Date.now()-1 },
+    { id:'i2', cid:'c1', company:'TechNova Solutions', title:'Full Stack Developer Intern', desc:'Work on MERN stack projects. Build REST APIs, connect databases and create full-stack features end-to-end.', location:'Remote', type:'Remote', stipend:'15000', duration:'6 months', skills:['Node.js','React','MongoDB','Express'], openings:2, deadline:'2026-12-15', active:true, date: Date.now()-2 },
+    { id:'i3', cid:'c2', company:'GreenLeaf Finance', title:'Data Analytics Intern', desc:'Analyze financial data, create reports and dashboards using Python and SQL to extract business insights.', location:'Mumbai', type:'On-site', stipend:'10000', duration:'2 months', skills:['Python','SQL','Excel','Tableau'], openings:1, deadline:'2026-11-30', active:true, date: Date.now()-3 },
+    { id:'i4', cid:'c2', company:'GreenLeaf Finance', title:'UI/UX Design Intern', desc:'Design user interfaces for our fintech app. Create wireframes, prototypes and conduct user research.', location:'Remote', type:'Remote', stipend:'Unpaid', duration:'3 months', skills:['Figma','Adobe XD','Prototyping'], openings:2, deadline:'2026-12-20', active:true, date: Date.now()-4 },
+    { id:'i5', cid:'c1', company:'TechNova Solutions', title:'Backend Developer Intern', desc:'Build REST APIs using Node.js and Express. Work with databases and participate in code reviews.', location:'Bangalore', type:'On-site', stipend:'14000', duration:'4 months', skills:['Node.js','Express','MongoDB','REST API'], openings:2, deadline:'2026-12-10', active:true, date: Date.now()-5 }
+  ]);
+  DB.set('seeded', ['yes']);
+})();
+
+// ═══════════════════════════════════════════════════════════════
+//  SESSION
+// ═══════════════════════════════════════════════════════════════
+let currentUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+let applyTargetId = null;
+
+function setUser(u) { currentUser = u; sessionStorage.setItem('user', JSON.stringify(u)); updateNav(); }
+function clearUser() { currentUser = null; sessionStorage.removeItem('user'); updateNav(); }
+
+function updateNav() {
+  const nav = document.getElementById('navLinks');
+  if (!currentUser) {
+    nav.innerHTML = `<button class="nav-btn" onclick="showPage('home')">Home</button>
+      <button class="nav-btn" onclick="showPage('sLogin')">Student Login</button>
+      <button class="nav-btn" onclick="showPage('cLogin')">Company Login</button>`;
+  } else if (currentUser.role === 'student') {
+    nav.innerHTML = `<button class="nav-btn" onclick="showPage('sDash')">Dashboard</button>
+      <button class="nav-btn" onclick="showPage('sBrowse')">Browse</button>
+      <button class="nav-btn" onclick="showPage('sApps')">My Applications</button>
+      <span style="font-size:.8rem;color:var(--text2);padding:0 .5rem">Hi, ${currentUser.name.split(' ')[0]}</span>
+      <button class="nav-btn" onclick="logout()">Logout</button>`;
+  } else {
+    nav.innerHTML = `<button class="nav-btn" onclick="showPage('cDash')">Dashboard</button>
+      <button class="nav-btn" onclick="showPage('cPost')">Post Internship</button>
+      <span style="font-size:.8rem;color:var(--text2);padding:0 .5rem">${currentUser.name}</span>
+      <button class="nav-btn" onclick="logout()">Logout</button>`;
+  }
+}
+
+function logout() { clearUser(); showPage('home'); }
+
+// ═══════════════════════════════════════════════════════════════
+//  PAGE ROUTING
+// ═══════════════════════════════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+  // Load data on page show
+  if (id === 'home') loadHome();
+  else if (id === 'sDash') loadStudentDash();
+  else if (id === 'sBrowse') loadBrowse();
+  else if (id === 'sApps') loadMyApps();
+  else if (id === 'cDash') loadCompanyDash();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════════════════════════
+function err(id, msg) {
+  const el = document.getElementById(id);
+  el.innerHTML = msg ? `<div class="alert alert-err">${msg}</div>` : '';
+}
+function ok(id, msg) {
+  const el = document.getElementById(id);
+  el.innerHTML = msg ? `<div class="alert alert-ok">${msg}</div>` : '';
+}
+
+function studentRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('srName').value.trim();
+  const email = document.getElementById('srEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('srPass').value;
+  const users = DB.get('users');
+  if (users.find(u => u.email === email)) return err('sRegErr', 'Email already registered.');
+  const user = { id: DB.id(), role:'student', name, email, password: pass,
+    phone: document.getElementById('srPhone').value, college: document.getElementById('srCollege').value,
+    degree: document.getElementById('srDegree').value, skills: [] };
+  users.push(user); DB.set('users', users);
+  setUser(user); showPage('sDash');
+}
+
+function studentLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('slEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('slPass').value;
+  const user = DB.get('users').find(u => u.email === email && u.password === pass);
+  if (!user) return err('sLoginErr', 'Invalid email or password.');
+  setUser(user); showPage('sDash');
+}
+
+function companyRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('crName').value.trim();
+  const email = document.getElementById('crEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('crPass').value;
+  const companies = DB.get('companies');
+  if (companies.find(c => c.email === email)) return err('cRegErr', 'Email already registered.');
+  const c = { id: DB.id(), role:'company', name, email, password: pass,
+    industry: document.getElementById('crIndustry').value,
+    website: document.getElementById('crWebsite').value,
+    location: document.getElementById('crLocation').value };
+  companies.push(c); DB.set('companies', companies);
+  setUser({ ...c, role:'company' }); showPage('cDash');
+}
+
+function companyLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('clEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('clPass').value;
+  const c = DB.get('companies').find(c => c.email === email && c.password === pass);
+  if (!c) return err('cLoginErr', 'Invalid email or password.');
+  setUser({ ...c, role:'company' }); showPage('cDash');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  HOME
+// ═══════════════════════════════════════════════════════════════
+function loadHome() {
+  const interns = DB.get('internships').filter(i => i.active).length;
+  const comps = new Set(DB.get('internships').map(i => i.cid)).size;
+  const studs = DB.get('users').length;
+  document.getElementById('heroInternCount').textContent = interns + '+';
+  document.getElementById('heroCompCount').textContent = comps + '+';
+  document.getElementById('heroStudCount').textContent = studs + '+';
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  STUDENT DASHBOARD
+// ═══════════════════════════════════════════════════════════════
+function loadStudentDash() {
+  if (!currentUser) return showPage('sLogin');
+  document.getElementById('sDashName').textContent = currentUser.name.split(' ')[0];
+  const apps = DB.get('applications').filter(a => a.sid === currentUser.id);
+  document.getElementById('sdTotal').textContent = apps.length;
+  document.getElementById('sdPending').textContent = apps.filter(a => a.status === 'Pending' || a.status === 'Under Review').length;
+  document.getElementById('sdAccepted').textContent = apps.filter(a => a.status === 'Accepted').length;
+  document.getElementById('sdRejected').textContent = apps.filter(a => a.status === 'Rejected').length;
+  const internships = DB.get('internships');
+  const recent = apps.slice(0, 3).map(a => {
+    const intern = internships.find(i => i.id === a.iid) || {};
+    return `<div class="app-item">
+      <div><h4 style="margin-bottom:.3rem">${intern.title || 'Removed'}</h4>
+        <p style="font-size:.8rem;color:var(--text3)">${intern.company || ''} • ${intern.location || ''}</p></div>
+      <div style="display:flex;gap:.8rem;align-items:center">
+        <span style="font-size:.76rem;color:var(--text3)">${new Date(a.date).toLocaleDateString('en-IN')}</span>
+        <span class="badge ${statusBadge(a.status)}">${a.status}</span>
+      </div></div>`;
+  }).join('') || `<div class="card" style="padding:2.5rem;text-align:center"><div style="font-size:3rem;margin-bottom:.8rem">🌟</div><h3 style="margin-bottom:.5rem">No applications yet!</h3><p style="font-size:.85rem;color:var(--text2);margin-bottom:1.2rem">Start exploring internships</p><button class="btn btn-primary" onclick="showPage('sBrowse')">Browse Internships</button></div>`;
+  document.getElementById('sdRecentApps').innerHTML = recent;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  BROWSE INTERNSHIPS
+// ═══════════════════════════════════════════════════════════════
+function loadBrowse(q = '', type = '') {
+  if (!currentUser) return showPage('sLogin');
+  let list = DB.get('internships').filter(i => i.active);
+  if (q) { const s = q.toLowerCase(); list = list.filter(i => i.title.toLowerCase().includes(s) || i.company.toLowerCase().includes(s) || (i.skills||[]).some(sk => sk.toLowerCase().includes(s))); }
+  if (type) list = list.filter(i => i.type === type);
+  list.sort((a,b) => b.date - a.date);
+  document.getElementById('browseCount').textContent = list.length + ' listings';
+  document.getElementById('internshipsList').innerHTML = list.map(i => internCard(i)).join('') || `<div class="empty"><div class="empty-icon">📭</div><h3>No internships found</h3><p>Try different search terms</p></div>`;
+}
+
+function searchInternships(e) { e.preventDefault(); loadBrowse(document.getElementById('searchQ').value, document.getElementById('searchType').value); }
+function clearSearch() { document.getElementById('searchQ').value = ''; document.getElementById('searchType').value = ''; loadBrowse(); }
+
+function internCard(i) {
+  const typeBadge = i.type === 'Remote' ? 'b-green' : i.type === 'Hybrid' ? 'b-purple' : 'b-blue';
+  return `<div class="int-card">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem">
+      <div style="display:flex;align-items:center;gap:.8rem">
+        <div class="avatar">${i.company.charAt(0)}</div>
+        <div><div class="int-title">${i.title}</div><div class="int-company">${i.company}</div></div>
+      </div>
+      <span class="badge ${typeBadge}">${i.type}</span>
+    </div>
+    <p style="font-size:.83rem;color:var(--text2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${i.desc}</p>
+    <div class="meta"><span>📍 ${i.location}</span><span>⏱️ ${i.duration}</span><span>👥 ${i.openings} opening${i.openings>1?'s':''}</span>${i.deadline?`<span>📅 ${i.deadline}</span>`:''}</div>
+    ${i.skills&&i.skills.length?`<div class="skills">${i.skills.slice(0,4).map(s=>`<span class="skill">${s}</span>`).join('')}${i.skills.length>4?`<span class="skill">+${i.skills.length-4}</span>`:''}</div>`:''}
+    <div class="int-footer">
+      <div class="stipend">💰 ${i.stipend==='Unpaid'?'Unpaid':'₹'+i.stipend+'/month'}</div>
+      <button class="btn btn-primary btn-sm" onclick="openApply('${i.id}')">Apply Now</button>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  APPLY MODAL
+// ═══════════════════════════════════════════════════════════════
+function openApply(iid) {
+  const intern = DB.get('internships').find(i => i.id === iid);
+  applyTargetId = iid;
+  document.getElementById('applyInfo').innerHTML = `🏢 <strong>${intern.company}</strong> &nbsp;•&nbsp; 📍 ${intern.location} &nbsp;•&nbsp; 💰 ${intern.stipend==='Unpaid'?'Unpaid':'₹'+intern.stipend+'/mo'}<br><strong style="color:var(--text)">${intern.title}</strong>`;
+  err('applyErr',''); ok('applyOk','');
+  document.getElementById('coverLetter').value = '';
+  document.getElementById('applyModal').classList.remove('hidden');
+}
+function closeApplyModal() { document.getElementById('applyModal').classList.add('hidden'); applyTargetId = null; }
+
+function submitApplication(e) {
+  e.preventDefault();
+  if (!currentUser) return;
+  const apps = DB.get('applications');
+  if (apps.find(a => a.sid === currentUser.id && a.iid === applyTargetId))
+    return err('applyErr', 'You already applied for this internship.');
+  apps.push({ id: DB.id(), sid: currentUser.id, iid: applyTargetId,
+    sName: currentUser.name, sEmail: currentUser.email,
+    coverLetter: document.getElementById('coverLetter').value,
+    status: 'Pending', date: Date.now() });
+  DB.set('applications', apps);
+  ok('applyOk', '✅ Application submitted successfully!');
+  setTimeout(() => { closeApplyModal(); showPage('sApps'); }, 1200);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  MY APPLICATIONS
+// ═══════════════════════════════════════════════════════════════
+function loadMyApps() {
+  if (!currentUser) return showPage('sLogin');
+  const apps = DB.get('applications').filter(a => a.sid === currentUser.id).sort((a,b)=>b.date-a.date);
+  const interns = DB.get('internships');
+  document.getElementById('appsCount').textContent = apps.length + ' total';
+  document.getElementById('myAppsList').innerHTML = apps.map(a => {
+    const i = interns.find(x => x.id === a.iid) || {};
+    return `<div class="app-item">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.4rem;flex-wrap:wrap">
+          <h4 style="margin:0">${i.title||'Internship Removed'}</h4>
+          <span class="badge ${statusBadge(a.status)}">${statusIcon(a.status)} ${a.status}</span>
+        </div>
+        <div class="meta"><span>🏢 ${i.company||'N/A'}</span><span>📍 ${i.location||''}</span><span>⏱️ ${i.duration||''}</span><span>💰 ${i.stipend==='Unpaid'?'Unpaid':i.stipend?'₹'+i.stipend+'/mo':''}</span></div>
+        ${a.coverLetter?`<div style="margin-top:.6rem;padding:.6rem .9rem;background:rgba(255,255,255,.03);border-radius:8px;border-left:3px solid var(--purple);font-size:.8rem;color:var(--text2);max-height:60px;overflow:hidden">${a.coverLetter}</div>`:''}
+      </div>
+      <div style="text-align:right;flex-shrink:0"><div style="font-size:.74rem;color:var(--text3)">Applied</div><div style="font-size:.82rem;color:var(--text2);font-weight:600">${new Date(a.date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</div></div>
+    </div>`;
+  }).join('') || `<div class="empty"><div class="empty-icon">📭</div><h3>No applications yet</h3><p>Browse and apply to internships!</p></div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  COMPANY DASHBOARD
+// ═══════════════════════════════════════════════════════════════
+function loadCompanyDash() {
+  if (!currentUser) return showPage('cLogin');
+  document.getElementById('cDashName').textContent = currentUser.name;
+  const mine = DB.get('internships').filter(i => i.cid === currentUser.id).sort((a,b)=>b.date-a.date);
+  document.getElementById('cdListings').textContent = mine.length;
+  document.getElementById('cdOpenings').textContent = mine.reduce((s,i)=>s+(i.openings||0),0);
+  document.getElementById('cListings').innerHTML = mine.map(i => {
+    const apps = DB.get('applications').filter(a => a.iid === i.id).length;
+    const typeBadge = i.type==='Remote'?'b-green':i.type==='Hybrid'?'b-purple':'b-blue';
+    return `<div class="app-item">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.4rem;flex-wrap:wrap">
+          <h4 style="margin:0">${i.title}</h4>
+          <span class="badge ${typeBadge}">${i.type}</span>
+          <span class="badge b-green">Active</span>
+        </div>
+        <div class="meta"><span>📍 ${i.location}</span><span>⏱️ ${i.duration}</span><span>👥 ${i.openings} opening${i.openings>1?'s':''}</span><span style="color:var(--green);font-weight:700">💰 ${i.stipend==='Unpaid'?'Unpaid':'₹'+i.stipend+'/mo'}</span></div>
+        ${i.skills&&i.skills.length?`<div class="skills" style="margin-top:.4rem">${i.skills.slice(0,5).map(s=>`<span class="skill">${s}</span>`).join('')}</div>`:''}
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <button class="btn btn-company btn-sm" onclick="viewApps('${i.id}')">👥 ${apps} Applicant${apps!==1?'s':''}</button>
+        <button class="btn btn-red btn-sm" onclick="deleteInternship('${i.id}')">🗑️</button>
+      </div>
+    </div>`;
+  }).join('') || `<div class="card" style="padding:3rem;text-align:center"><div style="font-size:3.5rem;margin-bottom:.8rem">📝</div><h3 style="margin-bottom:.4rem">No listings yet</h3><p style="font-size:.85rem;color:var(--text2);margin-bottom:1.2rem">Post your first internship</p><button class="btn btn-company" onclick="showPage('cPost')">Post Internship</button></div>`;
+}
+
+function deleteInternship(id) {
+  if (!confirm('Delete this internship?')) return;
+  const list = DB.get('internships').filter(i => i.id !== id);
+  DB.set('internships', list);
+  loadCompanyDash();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  POST INTERNSHIP
+// ═══════════════════════════════════════════════════════════════
+function postInternship(e) {
+  e.preventDefault();
+  err('postErr',''); ok('postOk','');
+  const skills = document.getElementById('pSkills').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const intern = {
+    id: DB.id(), cid: currentUser.id, company: currentUser.name,
+    title: document.getElementById('pTitle').value,
+    desc: document.getElementById('pDesc').value,
+    location: document.getElementById('pLoc').value,
+    type: document.getElementById('pType').value,
+    stipend: document.getElementById('pStip').value || 'Unpaid',
+    duration: document.getElementById('pDur').value,
+    skills, openings: parseInt(document.getElementById('pOpen').value)||1,
+    deadline: document.getElementById('pDead').value,
+    active: true, date: Date.now()
+  };
+  const list = DB.get('internships'); list.push(intern); DB.set('internships', list);
+  ok('postOk', '✅ Internship posted successfully!');
+  e.target.reset();
+  setTimeout(() => showPage('cDash'), 1200);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  VIEW APPLICANTS
+// ═══════════════════════════════════════════════════════════════
+function viewApps(iid) {
+  const intern = DB.get('internships').find(i => i.id === iid);
+  const apps = DB.get('applications').filter(a => a.iid === iid);
+  const users = DB.get('users');
+  document.getElementById('cAppsTitle').textContent = intern ? intern.title : 'Applicants';
+  document.getElementById('cAppsCount').textContent = apps.length + ' Applicant' + (apps.length!==1?'s':'');
+  const counts = { total:apps.length, pending:apps.filter(a=>a.status==='Pending').length, review:apps.filter(a=>a.status==='Under Review').length, accepted:apps.filter(a=>a.status==='Accepted').length, rejected:apps.filter(a=>a.status==='Rejected').length };
+  document.getElementById('cAppsStats').innerHTML = [
+    {l:'Total',v:counts.total,g:'var(--grad)'},{l:'Pending',v:counts.pending,g:'linear-gradient(135deg,#ffb400,#ff8c42)'},
+    {l:'Reviewing',v:counts.review,g:'linear-gradient(135deg,#4facfe,#00f2fe)'},{l:'Accepted',v:counts.accepted,g:'linear-gradient(135deg,#00e9a3,#00b4d8)'},
+    {l:'Rejected',v:counts.rejected,g:'linear-gradient(135deg,#ff4757,#ff6b81)'}
+  ].map(s=>`<div class="stat-card"><div class="num" style="background:${s.g};-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1.7rem">${s.v}</div><div class="lbl">${s.l}</div></div>`).join('');
+
+  document.getElementById('cAppsList').innerHTML = apps.length === 0
+    ? `<div class="empty"><div class="empty-icon">📭</div><h3>No applications yet</h3><p>Students haven't applied yet</p></div>`
+    : apps.map(a => {
+        const student = users.find(u => u.id === a.sid) || {};
+        return `<div class="card" style="padding:1.4rem">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+            <div style="flex:1">
+              <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem;flex-wrap:wrap">
+                <div class="avatar" style="width:42px;height:42px;font-size:1.1rem">${a.sName.charAt(0).toUpperCase()}</div>
+                <div><h4 style="margin:0">${a.sName}</h4><p style="font-size:.8rem;color:var(--text2);margin:0">${a.sEmail}</p></div>
+                <span class="badge ${statusBadge(a.status)}">${a.status}</span>
+              </div>
+              <div class="meta" style="margin-bottom:.5rem">
+                ${student.college?`<span>🎓 ${student.college}</span>`:''}
+                ${student.degree?`<span>📚 ${student.degree}</span>`:''}
+                ${student.phone?`<span>📞 ${student.phone}</span>`:''}
+              </div>
+              ${a.coverLetter?`<div style="padding:.7rem .9rem;background:rgba(255,255,255,.03);border-radius:8px;border-left:3px solid var(--purple);font-size:.8rem;color:var(--text2);max-height:80px;overflow:hidden;margin-top:.4rem"><strong style="font-size:.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:.2rem">Cover Letter</strong>${a.coverLetter}</div>`:''}
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.5rem;align-items:flex-end;flex-shrink:0">
+              <span style="font-size:.75rem;color:var(--text3)">${new Date(a.date).toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</span>
+              <div style="display:flex;gap:.4rem">
+                <button class="btn btn-green btn-sm" onclick="updateStatus('${a.id}','Accepted')" ${a.status==='Accepted'?'disabled':''}>✅ Accept</button>
+                <button class="btn btn-outline btn-sm" onclick="updateStatus('${a.id}','Under Review')" style="border-color:var(--blue);color:var(--blue)" ${a.status==='Under Review'?'disabled':''}>🔎 Review</button>
+                <button class="btn btn-red btn-sm" onclick="updateStatus('${a.id}','Rejected')" ${a.status==='Rejected'?'disabled':''}>❌ Reject</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+  showPage('cApps');
+}
+
+function updateStatus(aid, status) {
+  const apps = DB.get('applications');
+  const idx = apps.findIndex(a => a.id === aid);
+  if (idx === -1) return;
+  apps[idx].status = status;
+  DB.set('applications', apps);
+  // Re-render current view
+  const iid = apps[idx].iid;
+  viewApps(iid);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════════════
+function statusBadge(s) { return {Pending:'b-pending','Under Review':'b-review',Accepted:'b-accepted',Rejected:'b-rejected'}[s]||'b-pending'; }
+function statusIcon(s) { return {Pending:'⏳','Under Review':'🔎',Accepted:'✅',Rejected:'❌'}[s]||'⏳'; }
+
+// Init
+updateNav();
+loadHome();
+</script>
+</body>
+</html>
