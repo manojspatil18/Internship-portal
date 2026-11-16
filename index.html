@@ -187,7 +187,10 @@
 
 <!-- NAVBAR -->
 <nav id="navbar">
-  <div class="brand" onclick="showPage('home')">🎯 InternHub</div>
+  <div style="display:flex;align-items:center;gap:.7rem">
+    <button id="backBtn" onclick="goBack()" style="display:none;align-items:center;gap:.35rem;padding:.4rem .85rem;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:var(--text2);font-size:.82rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s" onmouseover="this.style.background='rgba(108,99,255,.18)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='var(--text2)'">← Back</button>
+    <div class="brand" onclick="showPage('home')">🎯 InternHub</div>
+  </div>
   <div class="nav-links" id="navLinks">
     <button class="nav-btn" onclick="showPage('home')">Home</button>
     <button class="nav-btn" onclick="showPage('sLogin')">Student Login</button>
@@ -556,18 +559,45 @@ function updateNav() {
 function logout() { clearUser(); showPage('home'); }
 
 // ═══════════════════════════════════════════════════════════════
-//  PAGE ROUTING
+//  PAGE ROUTING WITH BACK BUTTON SUPPORT
 // ═══════════════════════════════════════════════════════════════
+let pageHistory = [];
+let currentPage = 'home';
+
 function showPage(id) {
+  if (currentPage && currentPage !== id) pageHistory.push(currentPage);
+  currentPage = id;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   window.scrollTo(0, 0);
+  updateBackBtn();
   // Load data on page show
   if (id === 'home') loadHome();
   else if (id === 'sDash') loadStudentDash();
   else if (id === 'sBrowse') loadBrowse();
   else if (id === 'sApps') loadMyApps();
   else if (id === 'cDash') loadCompanyDash();
+}
+
+function goBack() {
+  if (pageHistory.length > 0) {
+    const prev = pageHistory.pop();
+    currentPage = prev;
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + prev).classList.add('active');
+    window.scrollTo(0, 0);
+    updateBackBtn();
+    if (prev === 'home') loadHome();
+    else if (prev === 'sDash') loadStudentDash();
+    else if (prev === 'sBrowse') loadBrowse();
+    else if (prev === 'sApps') loadMyApps();
+    else if (prev === 'cDash') loadCompanyDash();
+  }
+}
+
+function updateBackBtn() {
+  const btn = document.getElementById('backBtn');
+  if (btn) btn.style.display = pageHistory.length > 0 ? 'flex' : 'none';
 }
 
 // ═══════════════════════════════════════════════════════════════
