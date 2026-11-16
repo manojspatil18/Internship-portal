@@ -2,9 +2,9 @@
 
 ## 🔗 Live Demo
 
-[![Live Demo](https://img.shields.io/badge/🎯%20Live%20Demo-Click%20Here-6c63ff?style=for-the-badge)](https://tinyurl.com/myinternshipportal)
+[![Live Demo](https://img.shields.io/badge/🎯%20Live%20Demo-Click%20Here-6c63ff?style=for-the-badge)](https://manojspatil18.github.io/Internship-portal)
 
-**👉 [https://tinyurl.com/myinternshipportal](https://tinyurl.com/myinternshipportal)**
+**👉 [Click here to open Internship Portal](https://manojspatil18.github.io/Internship-portal)**
 
 ---
 
