@@ -7,11 +7,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #07071a; --bg2: #0d0d2b; --card: rgba(255,255,255,0.04);
-      --border: rgba(255,255,255,0.08); --purple: #6c63ff; --blue: #4facfe;
+      --bg: #071410; --bg2: #0c1f18; --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08); --purple: #00c896; --blue: #00e9a3;
       --green: #00e9a3; --pink: #f77bff; --orange: #ff8c42; --red: #ff4757;
-      --text: #f0f0ff; --text2: #9090b8; --text3: #555577;
-      --grad: linear-gradient(135deg,#6c63ff,#4facfe);
+      --text: #edfff8; --text2: #7ab8a0; --text3: #3d6e5a;
+      --grad: linear-gradient(135deg,#00c896,#4facfe);
       --grad2: linear-gradient(135deg,#f77bff,#ff8c42);
       --r: 12px; --r2: 20px; --t: all .3s cubic-bezier(.4,0,.2,1);
     }
@@ -83,12 +83,12 @@
     .between{justify-content:space-between}
     .mb1{margin-bottom:.6rem}.mb2{margin-bottom:1.2rem}.mb3{margin-bottom:1.8rem}.mt1{margin-top:.6rem}.mt2{margin-top:1.2rem}
     /* HERO */
-    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;background:radial-gradient(ellipse at 20% 20%,rgba(108,99,255,.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(79,172,254,.1) 0%,transparent 60%),var(--bg);position:relative;overflow:hidden}
+    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;background:radial-gradient(ellipse at 20% 20%,rgba(0,200,150,.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(0,233,163,.1) 0%,transparent 60%),var(--bg);position:relative;overflow:hidden}
     .hero::before,.hero::after{content:'';position:absolute;border-radius:50%;animation:pulse 4s ease-in-out infinite}
-    .hero::before{width:500px;height:500px;top:-100px;left:-100px;background:radial-gradient(circle,rgba(108,99,255,.12),transparent 70%)}
-    .hero::after{width:400px;height:400px;bottom:-80px;right:-80px;background:radial-gradient(circle,rgba(79,172,254,.1),transparent 70%);animation-delay:2s}
+    .hero::before{width:500px;height:500px;top:-100px;left:-100px;background:radial-gradient(circle,rgba(0,200,150,.12),transparent 70%)}
+    .hero::after{width:400px;height:400px;bottom:-80px;right:-80px;background:radial-gradient(circle,rgba(0,233,163,.1),transparent 70%);animation-delay:2s}
     .hero-content{position:relative;z-index:1;max-width:780px}
-    .hero-pill{display:inline-block;padding:.35rem 1.1rem;background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.3);border-radius:50px;font-size:.78rem;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.4rem}
+    .hero-pill{display:inline-block;padding:.35rem 1.1rem;background:rgba(0,200,150,.15);border:1px solid rgba(0,200,150,.3);border-radius:50px;font-size:.78rem;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.4rem}
     .hero h1{font-size:clamp(2rem,5vw,3.4rem);margin-bottom:1rem}
     .hero p{font-size:1.05rem;color:var(--text2);max-width:520px;margin:0 auto 2.2rem}
     .hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
